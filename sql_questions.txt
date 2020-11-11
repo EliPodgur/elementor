@@ -1,0 +1,20 @@
+Q1:
+SELECT dp.department_name, emp.employee ,MAX(salary) ,
+(MAX(salary) - (SELECT MAX(salary) FROM employees
+  WHERE department_id = emp.department_id AND salary <  MAX(dep.salary))) as difference
+FROM employees as emp, departments as dp
+GROUP BY department_id
+
+Q2:
+select (visits_on_promotion / total_visits) as percent FROM (
+select site, SUM(site_visitors.visits) as visits_on_promotion
+FROM site_visitors JOIN promotion_dates
+ ON site_visitors.data > promotion_dates.start AND site_visitors.data < promotion_dates.end
+ AND site_visitors.site == promotion_dates.site
+ GROUP BY site
+  UNION
+select site, SUM(site_visitors.visits) as total_visits
+FROM site_visitors
+ GROUP BY site)
+
+
